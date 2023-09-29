@@ -1,5 +1,6 @@
 import csv
 import xml.etree.ElementTree as ET
+import uuid
 
 csvmailhaslo = 'csv\\maile-hasla.csv'
 xmlfile = 'backup\\forupload.xml'
@@ -25,6 +26,10 @@ XMLAddressList = ET.Element('AddressList')
 XMLAddress = ET.SubElement(XMLAddressList, 'Address')
 print(ET.dump(XMLAddressList))
 
+addressuuid = uuid.uuid4()
 XMLAddressList.set('name', 'Mateusz')
+XMLAddressList.set('type', 'static')
+XMLAddressList.set('uuid', str(addressuuid))
+XMLAddressList.find('Address').text = 'test'
 
 print(ET.dump(XMLAddressList))
