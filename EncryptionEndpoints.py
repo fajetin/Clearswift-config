@@ -16,10 +16,10 @@ def writeerrorlog(errorlog):
         log.write(str(datetime.datetime.now()) + errorlog + '\n')
 
 # Parametry systemowe #
-folder = 'C:\\Users\\Mateusz\\Downloads\\'
+folder = 'C:\\Users\\Mateusz\\Downloads\\' # Potencjalnie do zmiany u klienta
 gzipiputfile = 'config\\config.xml.gz'
 xmlfile = 'config\\config.xml'
-csvmailhaslo = 'csv\\maile-hasla.csv'
+csvmailhaslo = 'csv\\maile-hasla.csv' # Potencjalnie do zmiany u klienta
 array = []
 gzipfinal = 'config\\forupload.xml.gz'
 
@@ -83,7 +83,7 @@ for user in array:
     target = ET.SubElement(RouteItem, 'target')
     target.text = user[2]
     source = ET.SubElement(RouteItem, 'source')
-    source.text = '2a5efa7c-82ca-4f1e-9170-8c408f08f4f4'
+    source.text = '2a5efa7c-82ca-4f1e-9170-8c408f08f4f4' # Do zmiany u klienta
     PasswordOptions = ET.SubElement(NewEncryptionPolicy, 'PasswordOptions')
     PasswordOptions.set('autogeneratePassword', 'static')
     PasswordOptions.set('encryptFileFormat', 'PASSWORD')
@@ -115,6 +115,6 @@ os.remove(xmlfile)
 
 # Uruchomienie AHK w celu wgrania pliku do konsoli Clearswift
 try:
-    subprocess.call(['C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey.exe', 'Clearswift-UploadBackup.ahk'])
+    subprocess.call(['C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey.exe', 'Clearswift-UploadBackup.ahk']) # Potencjalnie do zmiany u klienta
 except:
     writeerrorlog(' Błąd przy uruchamianiu pliku Clearswift-UploadBackup.ahk')
