@@ -7,33 +7,49 @@ import shutil
 import csv
 import xml.etree.ElementTree as ET
 import uuid
+import datetime
+import subprocess
+
+# Definicje
+def writeerrorlog(errorlog):
+    with open('logs\\errorlog.log', 'a', encoding='utf-8') as log:
+        log.write(str(datetime.datetime.now()) + errorlog + '\n')
 
 # Parametry systemowe #
-# folder = 'C:\\Users\\duda.m\\Desktop\\Python\\Clearswift\\'
-gzipiputfile = 'backup\\config.xml.gz'
-xmlfile = 'backup\\config.xml'
+folder = 'C:\\Users\\Mateusz\\Downloads\\'
+gzipiputfile = 'config\\config.xml.gz'
+xmlfile = 'config\\config.xml'
 csvmailhaslo = 'csv\\maile-hasla.csv'
 array = []
-gzipfinal = 'backup\\forupload.xml.gz'
+gzipfinal = 'config\\forupload.xml.gz'
 
 # Szukanie pliku backupu w pobranych
-listaplikow = os.listdir('backup')
-for pliki in listaplikow:
-    if pliki[len(pliki)-3:len(pliki)] == '.bk':
-        plik = pliki
-
+try:
+    listaplikow = os.listdir(folder)
+    for pliki in listaplikow:
+        if pliki[len(pliki)-3:len(pliki)] == '.bk':
+            plik = pliki
+except:
+    writeerrorlog(' Bląd podczas przeszukiwania folderu' + folder + ' z plikami wejsciowymi')
+        
 # Zmiana rozszerzenia na .xml.gz, rozpakowanie targz, usunięcie pliku oryginalnego
-os.rename('backup\\' + plik, gzipiputfile)
-with gzip.open(gzipiputfile, 'rb') as gzip_in:
-    with open(xmlfile, 'wb') as xml_out:
-        shutil.copyfileobj(gzip_in, xml_out)
-os.remove(gzipiputfile)
-
+try:
+    os.rename(folder + plik, gzipiputfile)
+    with gzip.open(gzipiputfile, 'rb') as gzip_in:
+        with open(xmlfile, 'wb') as xml_out:
+            shutil.copyfileobj(gzip_in, xml_out)
+    os.remove(gzipiputfile)
+except:
+    writeerrorlog(' Bląd zmiany nazwy pliku z ' + folder + ' na ' + gzipiputfile)
+        
 # Parsowanie csvki z danymi, Dodawanie wpisów do pliku XML w pętli
-with open(csvmailhaslo, newline='') as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=';')
-    for row in csvreader:
-        array.append(row)
+try:
+    with open(csvmailhaslo, newline='') as csvfile:
+        csvreader = csv.reader(csvfile, delimiter=';')
+        for row in csvreader:
+            array.append(row)
+except:
+    writeerrorlog(' Błąd związanym z plikiem CSV w lokalizacji: ' + csvmailhaslo)
 
 # Przygotowanie XML
 tree = ET.parse(xmlfile)
@@ -94,7 +110,12 @@ tree.write(xmlfile)
 with open(xmlfile, 'rb') as xml_in:
     with gzip.open(gzipfinal, 'wb') as gzip_out:
         gzip_out.writelines(xml_in)
-os.rename(gzipfinal, 'backup\\forupload.bk')
+os.rename(gzipfinal, 'config\\forupload.bk')
 os.remove(xmlfile)
 
 # Uruchomienie AHK w celu wgrania pliku do konsoli Clearswift
+try:
+    subprocess.call(['C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey.exe', 'Clearswift-UploadBackup.ahk'])
+except:
+    writeerrorlog(' Błąd przy uruchamianiu Upload.AHK')
+
