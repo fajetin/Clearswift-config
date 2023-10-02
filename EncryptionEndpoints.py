@@ -117,5 +117,4 @@ os.remove(xmlfile)
 try:
     subprocess.call(['C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey.exe', 'Clearswift-UploadBackup.ahk'])
 except:
-    writeerrorlog(' Błąd przy uruchamianiu Upload.AHK')
-
+    writeerrorlog(' Błąd przy uruchamianiu pliku Clearswift-UploadBackup.ahk')
