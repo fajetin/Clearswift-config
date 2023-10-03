@@ -4,7 +4,7 @@ Send "admin"
 Sleep 350
 Send "{Tab}"
 Sleep 350
-Send "ESAD2fs628wh"
+Send "cs_password"
 Sleep 350
 MouseClick "left", 864, 561
 Sleep 1750
